@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<addon addon_id="customBackgroundChooser" title="Custom background chooser by kiror" version_string="0.0" version_id="0" url="https://github.com/adlerosn/" install_callback_class="customBackgroundChooser_setup" install_callback_method="install" uninstall_callback_class="customBackgroundChooser_setup" uninstall_callback_method="uninstall">
+  <admin_navigation/>
+  <admin_permissions/>
+  <admin_style_properties/>
+  <admin_templates/>
+  <admin_template_modifications/>
+  <code_events/>
+  <code_event_listeners/>
+  <cron/>
+  <email_templates/>
+  <email_template_modifications/>
+  <optiongroups/>
+  <permissions>
+    <permission_groups/>
+    <permissions/>
+    <interface_groups/>
+  </permissions>
+  <phrases>
+    <phrase title="background_customizing" version_id="0" version_string="0.0"><![CDATA[Background customizing]]></phrase>
+  </phrases>
+  <route_prefixes>
+    <route_type type="public">
+      <prefix original_prefix="backgroundchange" class="customBackgroundChooser_routeCallback" build_link="all"/>
+      <prefix original_prefix="backgroundchangejsreplier" class="customBackgroundChooser_routeJSCallback" build_link="data_only"/>
+    </route_type>
+  </route_prefixes>
+  <style_properties/>
+  <templates>
+    <template title="kiror_background_change_main_page" version_id="0" version_string="0.0"><![CDATA[<xen:title>Background changing page</xen:title>
+{xen:raw $html}]]></template>
+    <template title="kiror_include_on_style_chooser" version_id="0" version_string="0.0"><![CDATA[<h3 class="subHeading">{xen:phrase background_customizing}</h3>
+<ol class="primaryContent chooserColumns twoColumns overlayScroll">
+<li>
+	<a href="{xen:link 'backgroundchange/default'}">
+		<span class="icon"><span></span></span>
+		<span class="title">Default</span>
+		<span class="description">Uses the default theme's background.</span>
+	</a>
+
+</li>
+<li>
+	<a href="{xen:link 'backgroundchange/'}">
+		<span class="icon"><span></span></span>
+		<span class="title">Customize</span>
+		<span class="description">Choose another background.</span>
+	</a>
+</li>
+
+</ol>]]></template>
+  </templates>
+  <public_template_modifications>
+    <modification template="page_container_js_body" modification_key="addbackgroundhook" description="Hooks this to changing the background over demand via JavaScript." execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[</script>]]></find>
+      <replace><![CDATA[var nid={xen:if $forum.node_id, $forum.node_id, 0};
+
+$.get("{xen:link "backgroundchangejsreplier"}", {
+    'nid' : nid
+}, function (newBg) {
+    document.getElementById("XenForo").style.background = newBg;
+});
+
+</script>]]></replace>
+    </modification>
+    <modification template="style_chooser" modification_key="addincludehook" description="Adds an include hook" execution_order="10" enabled="1" action="str_replace">
+      <find><![CDATA[<div class="sectionFooter overlayOnly"><a class="button primary OverlayCloser">{xen:phrase cancel}</a></div>]]></find>
+      <replace><![CDATA[<xen:if is="{$visitor.user_id}"><xen:include template="kiror_include_on_style_chooser" /></xen:if>
+	<div class="sectionFooter overlayOnly"><a class="button primary OverlayCloser">{xen:phrase cancel}</a></div>]]></replace>
+    </modification>
+  </public_template_modifications>
+  <bb_code_media_sites/>
+  <bb_codes/>
+</addon>
