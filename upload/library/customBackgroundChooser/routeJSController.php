@@ -17,7 +17,9 @@ class customBackgroundChooser_routeJSController extends XenForo_ControllerPublic
 		if(count($node)==0){$nid=0;};
 		$r=customBackgroundChooser_sharedStatic::getFromDB($nid,$uid);
 		if(customBackgroundChooser_sharedStatic::startsWith($r,'url')){
-			die('');
+			$u=substr($r,3);
+			$i='rgb(0, 0, 0) url(\''.$u.'\') no-repeat 50% 0 fixed';
+			die($i);
 		}
 		else if (customBackgroundChooser_sharedStatic::startsWith($r,'sug')){
 			$u=substr($r,3);
@@ -25,10 +27,13 @@ class customBackgroundChooser_routeJSController extends XenForo_ControllerPublic
 			die($i);
 		}
 		else if (customBackgroundChooser_sharedStatic::startsWith($r,'clr')){
-			die('');
+			$u=substr($r,3);
+			die($u);
 		}
 		else if (customBackgroundChooser_sharedStatic::startsWith($r,'def')){
-			die('');
+			$u=substr($r,3);
+			$u='';
+			die($u);
 		}
 		else {
 			die('');

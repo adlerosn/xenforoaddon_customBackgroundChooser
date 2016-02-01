@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="customBackgroundChooser" title="Custom background chooser by kiror" version_string="0.0" version_id="0" url="https://github.com/adlerosn/" install_callback_class="customBackgroundChooser_setup" install_callback_method="install" uninstall_callback_class="customBackgroundChooser_setup" uninstall_callback_method="uninstall">
+<addon addon_id="customBackgroundChooser" title="Custom background chooser by kiror" version_string="0.1" version_id="1" url="https://github.com/adlerosn/" install_callback_class="customBackgroundChooser_setup" install_callback_method="install" uninstall_callback_class="customBackgroundChooser_setup" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -27,7 +27,333 @@
   </route_prefixes>
   <style_properties/>
   <templates>
+    <template title="color_picker_copypastefromadmintemplate" version_id="0" version_string="0.0"><![CDATA[<xen:require css="color_picker_copypastefromadmintemplate.css" />
+<xen:require js="js/xenforo/color_picker.js" />
+
+<div id="ColorPickerInstance" class="xenOverlay">
+	<!--<a class="close OverlayCloser"></a>-->
+	<form class="colorPickerForm formOverlay">
+	
+		<div class="ColorPickerTabs">
+	
+			<ul class="tabs" data-panes="#ColorPickerInstance .tabPanel">
+				<li><a>{xen:phrase color_palette}</a></li>
+				<li><a>{xen:phrase color_picker}</a></li>
+			</ul>
+			
+			<fieldset class="tabPanel PaletteTab">
+				<xen:if is="{$colorsGrouped}">
+					<ul>
+					<xen:foreach loop="$colorsGrouped" value="$colors">
+						<xen:foreach loop="$colors" value="$color">
+							<li title="@{$color.property_name}: {$color.propertyValueScalar}"
+								data-colorname="{$color.property_name}"
+								data-colorcss="{$color.propertyValueScalar}">{$color.title}</li>
+						</xen:foreach>
+					</xen:foreach>
+					</ul>
+				</xen:if>
+			</fieldset>
+			
+			<fieldset class="tabPanel PickerTab">
+				<div class="gradientContainer"><div class="gradient"><span class="circle"></span></div></div>
+				<div class="barContainer"><div class="bar"><span class="arrow"></span></div></div>
+			</fieldset>
+			
+		</div>
+		
+		<div class="fixedColumn">
+		
+			<div class="colorPreview">
+				<div class="preview"></div>
+				<div class="currentPreview"></div>
+			</div>
+			
+			<ul class="inputs">
+				<li><label for="pctrl_h">#</label> <input type="text" class="textCtrl" id="pctrl_h" name="hex" /></li>
+				<li>
+					<ul>
+						<li><label for="pctrl_r">R</label> <input type="text" class="textCtrl ltr" id="pctrl_r" name="r" /></li>
+						<li><label for="pctrl_g">G</label> <input type="text" class="textCtrl ltr" id="pctrl_g" name="g" /></li>
+						<li><label for="pctrl_b">B</label> <input type="text" class="textCtrl ltr" id="pctrl_b" name="b" /></li>
+					</ul>
+				</li>
+				<li><label for="pctrl_r">A</label> <input type="text" class="textCtrl ltr" id="pctrl_a" name="a" /></li>
+			</ul>
+		
+		</div>
+		
+		<div class="fixedBottom">
+			<input type="text" name="final" class="textCtrl finalValue ltr" />
+				
+			<label class="remove"><input type="checkbox" name="remove" value="1" /> {xen:phrase clear_value}</label>
+			
+			<span class="buttons">
+				<input type="button" class="button primary save" value="{xen:phrase okay}" />
+				<input type="button" class="button OverlayCloser" value="{xen:phrase cancel}" />
+			</span>			
+		</div>
+		
+	</form>
+</div>]]></template>
+    <template title="color_picker_copypastefromadmintemplate.css" version_id="0" version_string="0.0"><![CDATA[.colorPickerPlaceholder
+{
+	cursor: pointer;
+	display: inline-block;
+	zoom: 1;
+	width: 30px;
+	padding: 2px;
+	padding-right: 21px;
+	background-image: url('{xen:property imagePath}/xenforo/color-picker/palette.png');
+	background-position: right center;
+	background-repeat: no-repeat;
+}
+
+	.colorPickerPlaceholder span
+	{
+		display: block;
+		cursor: pointer;
+		border-radius: 2px;
+		height: 17px;
+	} 
+
+		.colorPickerPlaceholder span.undefined
+		{ 
+			background: transparent url('{xen:property imagePath}/xenforo/color-picker/undefined.png'); 
+			height: 17px; 
+		} 
+
+#ColorPickerInstance
+{
+	width: 486px;
+}
+
+.colorPickerForm
+{
+	overflow: hidden; zoom: 1;
+}
+
+/* tabs */
+
+.ColorPickerTabs
+{
+	width: 316px;
+	float: left;
+}
+
+.ColorPickerTabs .tabs
+{
+	padding-left: 10px;
+	margin-bottom: -1px;
+	background: transparent;
+}
+
+/* palette tab */
+
+.PaletteTab ul
+{
+	overflow: auto;
+	height: 280px;
+}
+
+	.PaletteTab li
+	{
+		overflow: hidden; zoom: 1;
+		border-bottom: 1px solid {xen:property primaryLightish};
+		cursor: pointer;
+		padding: 0 5px;
+		line-height: 26px;
+		font-size: 11px;
+	}
+
+		.PaletteTab li.selected
+		{
+			background: rgba(255,255,255, 0.5);
+			color: black;
+			font-weight: bold;
+		}
+
+			.PaletteTab li:hover,
+			.PaletteTab li.selected:hover
+			{
+				background: rgba(255,255,255, 0.25);
+				color: inherit;
+			}
+
+		.PaletteTab li .swatch
+		{
+			float: left;
+			margin-right: 5px;
+			width: 35px;
+			height: 24px;
+			border: 1px solid black;
+		}
+		
+
+
+/* picker tab */
+
+.PickerTab .gradientContainer
+{
+	float: left;
+	width: 258px;
+	height: 258px;
+	margin: 10px;
+	border: 1px solid {xen:property primaryLighter};
+}
+
+
+	.PickerTab .gradient
+	{
+		position: relative;
+		width: 256px;
+		height: 256px;
+		overflow: hidden;
+		background-image: url('{xen:property imagePath}/xenforo/color-picker/gradient.png');
+		border: 1px solid black;
+		cursor: crosshair;
+	}
+
+		.PickerTab .gradient .circle
+		{
+			position: absolute;
+			width: 10px;
+			height: 10px;
+			background-image: url('{xen:property imagePath}/xenforo/color-picker/circle.png');
+			margin: -5px 0 0 -5px;
+		}
+	
+.PickerTab .barContainer
+{
+	float: left;
+	margin: 10px 0;
+	width: 22px;
+	height: 258px;
+	border: 1px solid {xen:property primaryLighter};
+}
+
+	.PickerTab .bar
+	{
+		position: relative;
+		width: 20px;
+		height: 256px;
+		background-image: url('{xen:property imagePath}/xenforo/color-picker/bar.png');
+		border: 1px solid black;
+	}
+
+		.PickerTab .bar .arrow
+		{
+			position: absolute;
+			width: 36px;
+			height: 9px;
+			background-image: url('{xen:property imagePath}/xenforo/color-picker/arrows.png');
+			left: -8px;
+			margin-top: -5px;
+		}
+		
+/* fixed column */
+
+.fixedColumn
+{
+	float: left;
+	margin-left: 10px;
+	margin-top: 19px; /* tab height */
+}
+
+	#ColorPickerInstance .colorPreview
+	{
+		width: 68px;
+		border: 1px solid {xen:property primaryLighter};
+		background: transparent url('{xen:property imagePath}/xenforo/color-picker/undefined.png');
+		margin-bottom: 10px;
+	}
+	
+		#ColorPickerInstance .preview,
+		#ColorPickerInstance .currentPreview
+		{
+			height: 38px;
+			border: 1px solid black;
+		}
+			
+			#ColorPickerInstance .preview
+			{
+				border-bottom: none;
+			}
+		
+			#ColorPickerInstance .currentPreview
+			{
+				border-top: none;
+			}
+			
+	#ColorPickerInstance .inputs li
+	{
+		overflow: hidden; zoom: 1;
+	}
+
+	#ColorPickerInstance .inputs label
+	{
+		display: inline-block;
+		width: 15px;
+		float: left;
+	}
+	
+	#ColorPickerInstance .inputs .textCtrl
+	{
+		width: 55px;
+		box-sizing: border-box;
+		text-align: right;
+		float: left;
+	}
+	
+	#ColorPickerInstance .inputs ul
+	{
+		margin: 10px 0;
+	}
+
+
+
+
+.fixedBottom
+{
+	clear: both;
+	overflow: hidden; zoom: 1;
+	padding-top: 10px;
+}
+
+.fixedBottom .finalValue
+{
+	width: 150px;
+}
+
+.fixedBottom .remove
+{
+	font-size: 11px;
+}
+
+.fixedBottom .buttons
+{
+	float: right;
+}
+
+	.fixedBottom .button
+	{
+		margin-left: 3px;
+		min-width: 60px;
+	}]]></template>
+    <template title="kiror_background_change_flexbox_style.css" version_id="0" version_string="0.0"><![CDATA[.flexcontainer {
+  display: flex; /* or inline-flex */
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.flexitem {
+  height: 100px;
+  width: 300px;
+  order: 0;
+  margin:2px;
+}]]></template>
     <template title="kiror_background_change_main_page" version_id="0" version_string="0.0"><![CDATA[<xen:title>Background changing page</xen:title>
+<xen:include template="color_picker_copypastefromadmintemplate" />
+<xen:require css="kiror_background_change_flexbox_style.css" />
 {xen:raw $html}]]></template>
     <template title="kiror_include_on_style_chooser" version_id="0" version_string="0.0"><![CDATA[<h3 class="subHeading">{xen:phrase background_customizing}</h3>
 <ol class="primaryContent chooserColumns twoColumns overlayScroll">
@@ -57,7 +383,10 @@
 $.get("{xen:link "backgroundchangejsreplier"}", {
     'nid' : nid
 }, function (newBg) {
+    if(newBg==''){return;};
     document.getElementById("XenForo").style.background = newBg;
+    document.getElementById("XenForo").style.overflowY ='scroll !important';
+    document.getElementById("XenForo").style.backgroundSize = 'cover';
 });
 
 </script>]]></replace>
