@@ -23,7 +23,7 @@ class customBackgroundChooser_routeJSController extends XenForo_ControllerPublic
 		}
 		else if (customBackgroundChooser_sharedStatic::startsWith($r,'sug')){
 			$u=substr($r,3);
-			$i='rgb(0, 0, 0) url(\'library/customBackgroundChooser/defaultImages/'.$u.'.jpg\') no-repeat 50% 0 fixed';
+			$i='rgb(0, 0, 0) url(\'styles/kiror/customBackgroundChooser/defaultImages/'.$u.'.jpg\') no-repeat 50% 0 fixed';
 			die($i);
 		}
 		else if (customBackgroundChooser_sharedStatic::startsWith($r,'clr')){

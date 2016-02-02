@@ -69,9 +69,11 @@ function regionalSetUrlImage(eid,nid){
 
 $(document).ready(function() {
 $(".expanded").hide();
+$(".expandedcontents").hide();
 
 $(".expanded, .collapsed").click(function() {
 	$(this).parent().children(".expanded, .collapsed").toggle();
+	$(this).parent().children(".expandedcontents, .collapsedcontents").toggle();
 });
 });
 </script>';
@@ -80,6 +82,9 @@ $(".expanded, .collapsed").click(function() {
         <div class="collapsed"><div class="subHeading">&#x25b8; All forums at once</div></div>
         <div class="expanded">';
 		$html.='<div class="subHeading">&#x25be; All forums at once</div>';
+		$html.='</div>';
+		$html.='<div class="collapsedcontents"></div>';
+		$html.='<div class="expandedcontents">';
 		$html.='<div class="secondaryContent">';
 		$html.='<div class="primaryContent flexcontainer">';
 		$html.="\n";
@@ -88,7 +93,7 @@ $(".expanded, .collapsed").click(function() {
 		$html.='<table><tr>';
 		$html.='<td>';
 		$html.='<a href="index.php?backgroundchange/setall/def';
-		$html.='"><img src="library/customBackgroundChooser/genericImgs/defaultBkg.png" width="150" height="100" alt="" /></a>';
+		$html.='"><img src="styles/kiror/customBackgroundChooser/genericImgs/defaultBkg.png" width="150" height="100" alt="" /></a>';
 		$html.='</td>';
 		$html.='<td>';
 		$html.='<div style="margin-left: 10px;">';
@@ -152,7 +157,7 @@ $(".expanded, .collapsed").click(function() {
 			$html.='<table><tr>';
 			$html.='<td>';
 			$html.='<a href="index.php?backgroundchange/setall/sug'.$j;
-			$html.='"><img src="library/customBackgroundChooser/defaultImages/'.$j.'.png" width="150" height="100" alt="" /></a>';
+			$html.='"><img src="styles/kiror/customBackgroundChooser/defaultImages/'.$j.'.png" width="150" height="100" alt="" /></a>';
 			$html.='</td>';
 			$html.='<td>';
 			$html.='<div style="margin-left: 10px;">';
@@ -211,6 +216,9 @@ $(".expanded, .collapsed").click(function() {
 			<div class="collapsed"><div class="subHeading">&#x25b8; Forum node "'.$node['title'].'"</div></div>
 			<div class="expanded">';
 			$html.='<div class="subHeading">&#x25be; Forum node "'.$node['title'].'"</div>';
+			$html.='</div>';
+			$html.='<div class="collapsedcontents"></div>';
+			$html.='<div class="expandedcontents">';
 			//**//
 			$html.='<div class="secondaryContent">';
 			$html.='<div class="primaryContent flexcontainer">';
@@ -220,7 +228,7 @@ $(".expanded, .collapsed").click(function() {
 			$html.='<table><tr>';
 			$html.='<td>';
 			$html.='<a href="index.php?backgroundchange/set.'.$node['node_id'].'/def';
-			$html.='"><img src="library/customBackgroundChooser/genericImgs/defaultBkg.png" width="150" height="100" alt="" /></a>';
+			$html.='"><img src="styles/kiror/customBackgroundChooser/genericImgs/defaultBkg.png" width="150" height="100" alt="" /></a>';
 			$html.='</td>';
 			$html.='<td>';
 			$html.='<div style="margin-left: 10px;">';
@@ -265,8 +273,8 @@ $(".expanded, .collapsed").click(function() {
 				$html.='<td>';
 			$html.='<input
 						placeholder="Paste image URL"
-						class="urlPlacer'.$node['node_id'].'"
-						name="urlPlacer"
+						class="textCtrl"
+						name="urlPlacer'.$node['node_id'].'"
 						value=""
 						id="urlPlacer'.$node['node_id'].'"
 						type="text">';
@@ -288,7 +296,7 @@ $(".expanded, .collapsed").click(function() {
 				$html.='<table><tr>';
 				$html.='<td>';
 				$html.='<a href="index.php?backgroundchange/set.'.$node['node_id'].'/sug'.$j;
-				$html.='"><img src="library/customBackgroundChooser/defaultImages/'.$j.'.png" width="150" height="100" alt="" /></a>';
+				$html.='"><img src="styles/kiror/customBackgroundChooser/defaultImages/'.$j.'.png" width="150" height="100" alt="" /></a>';
 				$html.='</td>';
 				$html.='<td>';
 				$html.='<div style="margin-left: 10px;">';
