@@ -6,6 +6,16 @@ class customBackgroundChooser_routeController extends XenForo_ControllerPublic_A
 		if(!$visitor['user_id']){
 			throw $this->getNoPermissionResponseException();
 		};
+		if(!$visitor->hasPermission('backgroundchanginggroup', 'canchangebkg')){
+			$options = XenForo_Application::get('options');
+			$html = $options->notallowedmessagebkgchng;
+			$viewParams=array('html'=>$html);
+			return $this->responseView(
+				'XenForo_ViewPublic_Base',
+				'kiror_background_change_main_page',
+				$viewParams
+			);
+		};
 		if(customBackgroundChooser_sharedStatic::startsWith($this->_input->getInput()['_origRoutePath'],'backgroundchange/default')){
 			customBackgroundChooser_sharedStatic::userDefaultAllDB($visitor['user_id']);
 			return $this->responseView(

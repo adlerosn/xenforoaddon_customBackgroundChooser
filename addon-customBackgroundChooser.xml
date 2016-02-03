@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="customBackgroundChooser" title="Custom background chooser by kiror" version_string="0.1" version_id="1" url="https://github.com/adlerosn/" install_callback_class="customBackgroundChooser_setup" install_callback_method="install" uninstall_callback_class="customBackgroundChooser_setup" uninstall_callback_method="uninstall">
+<addon addon_id="customBackgroundChooser" title="Custom background chooser by kiror" version_string="0.2" version_id="2" url="https://github.com/adlerosn/" install_callback_class="customBackgroundChooser_setup" install_callback_method="install" uninstall_callback_class="customBackgroundChooser_setup" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -10,14 +10,35 @@
   <cron/>
   <email_templates/>
   <email_template_modifications/>
-  <optiongroups/>
+  <optiongroups>
+    <group group_id="bkgchngoptgrp" display_order="1" debug_only="0"/>
+    <option option_id="notallowedmessagebkgchng" edit_format="textbox" data_type="string" can_backup="1">
+      <default_value>You're not allowed to use this feature.</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="bkgchngoptgrp" display_order="1"/>
+    </option>
+  </optiongroups>
   <permissions>
-    <permission_groups/>
-    <permissions/>
-    <interface_groups/>
+    <permission_groups>
+      <permission_group permission_group_id="backgroundchanginggroup"/>
+    </permission_groups>
+    <permissions>
+      <permission permission_group_id="backgroundchanginggroup" permission_id="canchangebkg" permission_type="flag" default_value="unset" interface_group_id="backgroundchangingiface" display_order="1"/>
+    </permissions>
+    <interface_groups>
+      <interface_group interface_group_id="backgroundchangingiface" display_order="1"/>
+    </interface_groups>
   </permissions>
   <phrases>
     <phrase title="background_customizing" version_id="0" version_string="0.0"><![CDATA[Background customizing]]></phrase>
+    <phrase title="option_group_bkgchngoptgrp" version_id="1" version_string="0.1"><![CDATA[Background changing]]></phrase>
+    <phrase title="option_group_bkgchngoptgrp_description" version_id="1" version_string="0.1"><![CDATA[Options for the background chooser]]></phrase>
+    <phrase title="option_notallowedmessagebkgchng" version_id="1" version_string="0.1"><![CDATA[Not allowed message]]></phrase>
+    <phrase title="option_notallowedmessagebkgchng_explain" version_id="1" version_string="0.1"><![CDATA[Customize your reply message when the user isn't allowed to change its background.<br /> <b>Use HTML</b>.]]></phrase>
+    <phrase title="permission_backgroundchanginggroup_canchangebkg" version_id="1" version_string="0.1"><![CDATA[Can change background]]></phrase>
+    <phrase title="permission_group_backgroundchanginggroup" version_id="1" version_string="0.1"><![CDATA[Background changing]]></phrase>
+    <phrase title="permission_interface_backgroundchangingiface" version_id="1" version_string="0.1"><![CDATA[Background changing interface]]></phrase>
   </phrases>
   <route_prefixes>
     <route_type type="public">
@@ -355,7 +376,8 @@
 <xen:include template="color_picker_copypastefromadmintemplate" />
 <xen:require css="kiror_background_change_flexbox_style.css" />
 {xen:raw $html}]]></template>
-    <template title="kiror_include_on_style_chooser" version_id="0" version_string="0.0"><![CDATA[<h3 class="subHeading">{xen:phrase background_customizing}</h3>
+    <template title="kiror_include_on_style_chooser" version_id="1" version_string="0.1"><![CDATA[<xen:if is="{$visitor.permissions.backgroundchanginggroup.canchangebkg}">
+<h3 class="subHeading">{xen:phrase background_customizing}</h3>
 <ol class="primaryContent chooserColumns twoColumns overlayScroll">
 <li>
 	<a href="{xen:link 'backgroundchange/default'}">
@@ -373,7 +395,8 @@
 	</a>
 </li>
 
-</ol>]]></template>
+</ol>
+</xen:if>]]></template>
   </templates>
   <public_template_modifications>
     <modification template="page_container_js_body" modification_key="addbackgroundhook" description="Hooks this to changing the background over demand via JavaScript." execution_order="10" enabled="1" action="str_replace">
