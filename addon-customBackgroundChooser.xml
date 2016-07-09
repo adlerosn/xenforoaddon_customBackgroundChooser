@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="customBackgroundChooser" title="Custom background chooser by kiror" version_string="0.2" version_id="2" url="https://github.com/adlerosn/" install_callback_class="customBackgroundChooser_setup" install_callback_method="install" uninstall_callback_class="customBackgroundChooser_setup" uninstall_callback_method="uninstall">
+<addon addon_id="customBackgroundChooser" title="[kiror] Custom background chooser" version_string="0.3" version_id="3" url="https://github.com/adlerosn/" install_callback_class="customBackgroundChooser_setup" install_callback_method="install" uninstall_callback_class="customBackgroundChooser_setup" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -11,7 +11,7 @@
   <email_templates/>
   <email_template_modifications/>
   <optiongroups>
-    <group group_id="bkgchngoptgrp" display_order="1" debug_only="0"/>
+    <group group_id="bkgchngoptgrp" display_order="7" debug_only="0"/>
     <option option_id="notallowedmessagebkgchng" edit_format="textbox" data_type="string" can_backup="1">
       <default_value>You're not allowed to use this feature.</default_value>
       <edit_format_params></edit_format_params>
@@ -32,13 +32,13 @@
   </permissions>
   <phrases>
     <phrase title="background_customizing" version_id="0" version_string="0.0"><![CDATA[Background customizing]]></phrase>
-    <phrase title="option_group_bkgchngoptgrp" version_id="1" version_string="0.1"><![CDATA[Background changing]]></phrase>
+    <phrase title="option_group_bkgchngoptgrp" version_id="3" version_string="0.3"><![CDATA[[kiror] Background changing]]></phrase>
     <phrase title="option_group_bkgchngoptgrp_description" version_id="1" version_string="0.1"><![CDATA[Options for the background chooser]]></phrase>
     <phrase title="option_notallowedmessagebkgchng" version_id="1" version_string="0.1"><![CDATA[Not allowed message]]></phrase>
     <phrase title="option_notallowedmessagebkgchng_explain" version_id="1" version_string="0.1"><![CDATA[Customize your reply message when the user isn't allowed to change its background.<br /> <b>Use HTML</b>.]]></phrase>
     <phrase title="permission_backgroundchanginggroup_canchangebkg" version_id="1" version_string="0.1"><![CDATA[Can change background]]></phrase>
-    <phrase title="permission_group_backgroundchanginggroup" version_id="1" version_string="0.1"><![CDATA[Background changing]]></phrase>
-    <phrase title="permission_interface_backgroundchangingiface" version_id="1" version_string="0.1"><![CDATA[Background changing interface]]></phrase>
+    <phrase title="permission_group_backgroundchanginggroup" version_id="3" version_string="0.3"><![CDATA[[kiror] Background changing]]></phrase>
+    <phrase title="permission_interface_backgroundchangingiface" version_id="3" version_string="0.3"><![CDATA[[kiror] Background changing interface]]></phrase>
   </phrases>
   <route_prefixes>
     <route_type type="public">
@@ -410,6 +410,16 @@ $.get("{xen:link "backgroundchangejsreplier"}", {
     document.getElementById("XenForo").style.background = newBg;
     document.getElementById("XenForo").style.overflowY ='scroll !important';
     document.getElementById("XenForo").style.backgroundSize = 'cover';
+    parallaxedBg = document.getElementsByClassName('parallax');
+    if(parallaxedBg.length>0){
+        for(i=0; i<parallaxedBg.length; i++){
+            parallaxedBg[i].style.background = newBg;
+        }
+    }else{
+        nodes=document.getElementsByClassName("categoryStrip");
+        for(i=0; i<nodes.length; i++)
+            {nodes[i].style.background=newBg;}
+    }
 });
 
 </script>]]></replace>

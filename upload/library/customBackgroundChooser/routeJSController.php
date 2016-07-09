@@ -21,12 +21,12 @@ class customBackgroundChooser_routeJSController extends XenForo_ControllerPublic
 		$r=customBackgroundChooser_sharedStatic::getFromDB($nid,$uid);
 		if(customBackgroundChooser_sharedStatic::startsWith($r,'url')){
 			$u=substr($r,3);
-			$i='rgb(0, 0, 0) url(\''.$u.'\') no-repeat 50% 0 fixed';
+			$i='rgb(0, 0, 0) url(\''.$u.'\') no-repeat fixed 50% 0 / cover';
 			die($i);
 		}
 		else if (customBackgroundChooser_sharedStatic::startsWith($r,'sug')){
 			$u=substr($r,3);
-			$i='rgb(0, 0, 0) url(\'styles/kiror/customBackgroundChooser/defaultImages/'.$u.'.jpg\') no-repeat 50% 0 fixed';
+			$i='rgb(0, 0, 0) url(\'styles/kiror/customBackgroundChooser/defaultImages/'.$u.'.jpg\') no-repeat fixed 50% 0 / cover';
 			die($i);
 		}
 		else if (customBackgroundChooser_sharedStatic::startsWith($r,'clr')){
