@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="customBackgroundChooser" title="[kiror] Custom background chooser" version_string="0.3" version_id="3" url="https://github.com/adlerosn/" install_callback_class="customBackgroundChooser_setup" install_callback_method="install" uninstall_callback_class="customBackgroundChooser_setup" uninstall_callback_method="uninstall">
+<addon addon_id="customBackgroundChooser" title="[kiror] Custom background chooser" version_string="0.4" version_id="4" url="https://github.com/adlerosn/" install_callback_class="customBackgroundChooser_setup" install_callback_method="install" uninstall_callback_class="customBackgroundChooser_setup" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
   <admin_templates/>
   <admin_template_modifications/>
   <code_events/>
-  <code_event_listeners/>
+  <code_event_listeners>
+    <listener event_id="template_post_render" execute_order="10" callback_class="customBackgroundChooser_templatePostRender" callback_method="tpr_callback" active="1" hint="" description="Add custom CSS rule for background"/>
+  </code_event_listeners>
   <cron/>
   <email_templates/>
   <email_template_modifications/>
