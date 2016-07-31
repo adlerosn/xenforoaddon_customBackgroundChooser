@@ -1,9 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="customBackgroundChooser" title="[kiror] Custom background chooser" version_string="0.4" version_id="4" url="https://github.com/adlerosn/" install_callback_class="customBackgroundChooser_setup" install_callback_method="install" uninstall_callback_class="customBackgroundChooser_setup" uninstall_callback_method="uninstall">
+<addon addon_id="customBackgroundChooser" title="[kiror] Custom background chooser" version_string="0.5" version_id="5" url="https://github.com/adlerosn/" install_callback_class="customBackgroundChooser_setup" install_callback_method="install" uninstall_callback_class="customBackgroundChooser_setup" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
-  <admin_templates/>
+  <admin_templates>
+    <template title="color_picker_kiror_customBackground"><![CDATA[<xen:require css="color_picker.css" />
+<xen:require js="js/xenforo/color_picker.js" />
+
+<div id="ColorPickerInstance" class="xenOverlay">
+	<a class="close OverlayCloser"></a>
+	<div class="colorPickerForm formOverlay">
+	
+		<div class="ColorPickerTabs">
+	
+			<ul class="tabs" data-panes="#ColorPickerInstance .tabPanel">
+				<li><a>{xen:phrase color_palette}</a></li>
+				<li><a>{xen:phrase color_picker}</a></li>
+			</ul>
+			
+			<fieldset class="tabPanel PaletteTab">
+				<xen:if is="{$colorsGrouped}">
+					<ul>
+					<xen:foreach loop="$colorsGrouped" value="$colors">
+						<xen:foreach loop="$colors" value="$color">
+							<li title="@{$color.property_name}: {$color.propertyValueScalar}"
+								data-colorname="{$color.property_name}"
+								data-colorcss="{$color.propertyValueScalar}">{$color.title}</li>
+						</xen:foreach>
+					</xen:foreach>
+					</ul>
+				</xen:if>
+			</fieldset>
+			
+			<fieldset class="tabPanel PickerTab">
+				<div class="gradientContainer"><div class="gradient"><span class="circle"></span></div></div>
+				<div class="barContainer"><div class="bar"><span class="arrow"></span></div></div>
+			</fieldset>
+			
+		</div>
+		
+		<div class="fixedColumn">
+		
+			<div class="colorPreview">
+				<div class="preview"></div>
+				<div class="currentPreview"></div>
+			</div>
+			
+			<ul class="inputs">
+				<li><label for="pctrl_h">#</label> <input type="text" class="textCtrl" id="pctrl_h" name="hex" /></li>
+				<li>
+					<ul>
+						<li><label for="pctrl_r">R</label> <input type="text" class="textCtrl ltr" id="pctrl_r" name="r" /></li>
+						<li><label for="pctrl_g">G</label> <input type="text" class="textCtrl ltr" id="pctrl_g" name="g" /></li>
+						<li><label for="pctrl_b">B</label> <input type="text" class="textCtrl ltr" id="pctrl_b" name="b" /></li>
+					</ul>
+				</li>
+				<li><label for="pctrl_r">A</label> <input type="text" class="textCtrl ltr" id="pctrl_a" name="a" /></li>
+			</ul>
+		
+		</div>
+		
+		<div class="fixedBottom">
+			<input type="text" name="final" class="textCtrl finalValue ltr" />
+				
+			<label class="remove"><input type="checkbox" name="remove" value="1" /> {xen:phrase clear_value}</label>
+			
+			<span class="buttons">
+				<input type="button" class="button primary save" value="{xen:phrase okay}" />
+				<input type="button" class="button OverlayCloser" value="{xen:phrase cancel}" />
+			</span>			
+		</div>
+		
+	</div>
+</div>]]></template>
+    <template title="kiror_customBackground_options_places"><![CDATA[<xen:require js="js/xenforo/options_censor.js" />
+<xen:require js="js/xenforo/color_picker.js" />
+<xen:require css="color_picker.css" />
+<xen:require css="kiror_customBackground_options_places.css" />
+
+<xen:include template="color_picker_kiror_customBackground" />
+
+<xen:controlunit label="{$preparedOption.title}" hint="{$preparedOption.hint}">
+	<xen:explain>{xen:raw $preparedOption.explain}</xen:explain>
+	<xen:html>
+<table class="beatiful">
+	<tr class="beatiful">
+		<th class="beatiful alignCenter">Style ID</th>
+		<th class="beatiful alignCenter">User selectable</th>
+		<th class="beatiful alignCenter">Style name</th>
+		<th class="beatiful alignCenter">HTML Tag</th>
+		<th class="beatiful alignCenter">BODY Tag</th>
+		<th class="beatiful alignCenter">Parallax header classes</th>
+		<th class="beatiful alignCenter">Parallax holes</th>
+	</tr>
+	<xen:foreach loop="$choices" key="$counter" value="$choice">
+	<tr class="beatiful">
+		<td class="beatiful alignCenter">{$choice.style_id}</td>
+		<td class="beatiful alignCenter"><input type="checkbox" name="{$fieldPrefix}[{$preparedOption.option_id}][{$counter}][user_selectable]" <xen:if is="{$choice.user_selectable}">checked</xen:if> size="1" disabled="disabled" /></td>
+		<td class="beatiful alignCenter">{$choice.title}</td>
+		<td class="beatiful alignCenter"><input type="checkbox" name="{$fieldPrefix}[{$preparedOption.option_id}][{$counter}][html]" <xen:if is="{$choice.html}">checked</xen:if> size="1" /></td>
+		<td class="beatiful alignCenter"><input type="checkbox" name="{$fieldPrefix}[{$preparedOption.option_id}][{$counter}][body]" <xen:if is="{$choice.body}">checked</xen:if> size="1" /></td>
+		
+		<td class="beatiful alignCenter">
+		<xen:textbox class="alignCenter" name="{$fieldPrefix}[{$preparedOption.option_id}][{$counter}][parallaxHeaderClasses]" value="{$choice.parallaxHeaderClasses}" size="15" />
+		</td>
+		<td class="beatiful">
+		<table>
+		<tr>
+			<td class="rightbeatiful bottombeatiful">
+			Classes
+			</td>
+			<td class="leftbeatiful bottombeatiful">
+			<xen:textbox name="{$fieldPrefix}[{$preparedOption.option_id}][{$counter}][parallaxHolesClasses]" value="{$choice.parallaxHolesClasses}" size="20" />
+			</td>
+		</tr>
+		<tr>
+			<td class="rightbeatiful topbeatiful">
+			Color
+			</td>
+			<td class="leftbeatiful topbeatiful">
+			<xen:textbox name="{$fieldPrefix}[{$preparedOption.option_id}][{$counter}][parallaxHolesTintColor]" value="{$choice.parallaxHolesTintColor}" inputclass="ColorPicker DisablePalette" />
+			</td>
+		</tr>
+		</table>
+		</td>
+	</tr>
+	</xen:foreach>
+</table>
+		
+		<input type="hidden" name="{$listedFieldName}" value="{$preparedOption.option_id}" />
+		{xen:raw $editLink}
+	</xen:html>
+</xen:controlunit>
+]]></template>
+    <template title="kiror_customBackground_options_places.css"><![CDATA[table.beatiful {
+	width: 100%;
+}
+
+table.beatiful, th.beatiful, td.beatiful {
+	border: 1px solid {xen:property primaryDarker};
+}
+
+td.leftbeatiful {
+	border-left: 1px solid {xen:property primaryDarker};
+	padding-left: 5px;
+}
+td.rightbeatiful {
+	border-right: 1px solid {xen:property primaryDarker};
+	padding-right: 5px;
+}
+td.topbeatiful {
+	border-top: 1px solid {xen:property primaryDarker};
+	padding-top: 5px;
+}
+td.bottombeatiful {
+	border-bottom: 1px solid {xen:property primaryDarker};
+	padding-bottom: 5px;
+}
+
+th.beatiful, td.beatiful {
+	padding: 2px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+tr.beatiful:nth-child(even) {
+	background-color: {xen:property primaryLightest};
+}
+
+tr.beatiful:nth-child(odd) {
+	background-color: {xen:property primaryLighterStill};
+}
+
+th.beatiful {
+	font-weight: bold;
+	background-color: {xen:property primaryMedium};
+	color: {xen:property primaryLightest};
+}
+
+.alignRight {
+	text-align: right;
+}
+.alignLeft {
+	text-align: left;
+}
+.alignCenter {
+	text-align: center;
+}
+]]></template>
+  </admin_templates>
   <admin_template_modifications/>
   <code_events/>
   <code_event_listeners>
@@ -14,6 +199,12 @@
   <email_template_modifications/>
   <optiongroups>
     <group group_id="bkgchngoptgrp" display_order="7" debug_only="0"/>
+    <option option_id="backgroundReplaceRules" edit_format="callback" data_type="array" can_backup="1" validation_class="customBackgroundChooser_adminArrayPlaces" validation_method="verifier_AdminCP_CustomFieldsAdder">
+      <default_value>a:0:{}</default_value>
+      <edit_format_params>customBackgroundChooser_adminArrayPlaces::render_AdminCP_CustomFieldsAdder</edit_format_params>
+      <sub_options>*</sub_options>
+      <relation group_id="bkgchngoptgrp" display_order="2"/>
+    </option>
     <option option_id="notallowedmessagebkgchng" edit_format="textbox" data_type="string" can_backup="1">
       <default_value>You're not allowed to use this feature.</default_value>
       <edit_format_params></edit_format_params>
@@ -34,6 +225,8 @@
   </permissions>
   <phrases>
     <phrase title="background_customizing" version_id="0" version_string="0.0"><![CDATA[Background customizing]]></phrase>
+    <phrase title="option_backgroundReplaceRules" version_id="5" version_string="0.5"><![CDATA[Where will the client-side JavaScript replace?]]></phrase>
+    <phrase title="option_backgroundReplaceRules_explain" version_id="5" version_string="0.5"><![CDATA[]]></phrase>
     <phrase title="option_group_bkgchngoptgrp" version_id="3" version_string="0.3"><![CDATA[[kiror] Background changing]]></phrase>
     <phrase title="option_group_bkgchngoptgrp_description" version_id="1" version_string="0.1"><![CDATA[Options for the background chooser]]></phrase>
     <phrase title="option_notallowedmessagebkgchng" version_id="1" version_string="0.1"><![CDATA[Not allowed message]]></phrase>
@@ -363,6 +556,63 @@
 		margin-left: 3px;
 		min-width: 60px;
 	}]]></template>
+    <template title="kiror_background_change_allPages.js" version_id="5" version_string="0.5"><![CDATA[var nid={xen:if $forum.node_id, $forum.node_id, 0};
+
+$.get("{xen:link "backgroundchangejsreplier"}", {
+    'nid' : nid
+}, function (newBg) {
+    try{
+        var nbgdic = JSON.parse(newBg);
+        console.log('Background chooser started with:',nbgdic);
+        if(nbgdic['set']){
+            document.getElementById("XenForo").style.overflowY ='scroll !important';
+            document.html = document.getElementsByTagName('html')[0];
+            var nbgwig = []; /* New BackGround WIth    Glass */
+            var nbgwog = []; /* New BackGround WithOut Glass */
+            if(nbgdic['html']){
+            	nbgwog.push(document.html);
+            }
+            if(nbgdic['body']){
+            	nbgwog.push(document.body);
+            }
+            var i = 0;
+            var j = 0;
+            var toIterate1 = undefined;
+            var toIterate2 = undefined;
+            toIterate1 = nbgdic['parallaxWithoutGlass'];
+            for(i=0; i<toIterate1.length; i++){
+                toIterate2 = document.querySelectorAll(toIterate1[i]);
+                for(j=0; j<toIterate2.length; j++){
+                    nbgwog.push(toIterate2[j]);
+                }
+            }
+            toIterate1 = nbgdic['parallaxWithGlass'];
+            for(i=0; i<toIterate1.length; i++){
+                toIterate2 = document.querySelectorAll(toIterate1[i]);
+                for(j=0; j<toIterate2.length; j++){
+                    nbgwig.push(toIterate2[j]);
+                }
+            }
+            toIterate1 = nbgwog;
+            for(i=0; i<toIterate1.length; i++){
+                toIterate1[i].style.background = nbgdic['background'];
+                toIterate1[i].style.backgroundSize='cover';
+                toIterate1[i].style.backgroundAttachment='fixed';
+            }
+            toIterate1 = nbgwig;
+            for(i=0; i<toIterate1.length; i++){
+                toIterate1[i].style.background = nbgdic['background'];
+                toIterate1[i].style.backgroundSize='cover';
+                toIterate1[i].style.backgroundAttachment='fixed';
+                toIterate1[i].style.boxShadow  = nbgdic['box-shadow'];
+                toIterate1[i].style.textShadow = nbgdic['text-shadow'];
+            }
+        }
+    }catch(err){
+    	console.exception('Error from Background changer:', err);
+    }
+});
+]]></template>
     <template title="kiror_background_change_flexbox_style.css" version_id="0" version_string="0.0"><![CDATA[.flexcontainer {
   display: flex; /* or inline-flex */
   flex-wrap: wrap;
@@ -403,28 +653,8 @@
   <public_template_modifications>
     <modification template="page_container_js_body" modification_key="addbackgroundhook" description="Hooks this to changing the background over demand via JavaScript." execution_order="10" enabled="1" action="str_replace">
       <find><![CDATA[</script>]]></find>
-      <replace><![CDATA[var nid={xen:if $forum.node_id, $forum.node_id, 0};
-
-$.get("{xen:link "backgroundchangejsreplier"}", {
-    'nid' : nid
-}, function (newBg) {
-    if(newBg==''){return;};
-    document.getElementById("XenForo").style.background = newBg;
-    document.getElementById("XenForo").style.overflowY ='scroll !important';
-    document.getElementById("XenForo").style.backgroundSize = 'cover';
-    parallaxedBg = document.getElementsByClassName('parallax');
-    if(parallaxedBg.length>0){
-        for(i=0; i<parallaxedBg.length; i++){
-            parallaxedBg[i].style.background = newBg;
-        }
-    }else{
-        nodes=document.getElementsByClassName("categoryStrip");
-        for(i=0; i<nodes.length; i++)
-            {nodes[i].style.background=newBg;}
-    }
-});
-
-</script>]]></replace>
+      <replace><![CDATA[<xen:include template="kiror_background_change_allPages.js" />
+$0]]></replace>
     </modification>
     <modification template="style_chooser" modification_key="addincludehook" description="Adds an include hook" execution_order="10" enabled="1" action="str_replace">
       <find><![CDATA[<div class="sectionFooter overlayOnly"><a class="button primary OverlayCloser">{xen:phrase cancel}</a></div>]]></find>
