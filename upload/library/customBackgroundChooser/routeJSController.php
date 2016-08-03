@@ -13,11 +13,12 @@ class customBackgroundChooser_routeJSController extends XenForo_ControllerPublic
 	}
 	public static function debug($var){die(print_r($var,true));}
 	public function actionIndex(){
+		$final = array('set'=>false);
 		$visitor = XenForo_Visitor::getInstance();
-		if(!$visitor['user_id']){die('');};
+		if(!$visitor['user_id']){die(json_encode($final));};
 		$styleId = $visitor['style_id'];
 		if(!$visitor->hasPermission('backgroundchanginggroup', 'canchangebkg')){
-			die('');
+			die(json_encode($final));
 		};
 		$uid=$visitor['user_id'];
 		$nid=($this->_input->filterSingle('nid',XenForo_Input::INT));
@@ -36,7 +37,7 @@ class customBackgroundChooser_routeJSController extends XenForo_ControllerPublic
 		}
 		//self::debug($styleId);
 		//self::debug($allSpecificRules);
-		$final = array_merge($allSpecificRules[$styleId],array('set'=>false));
+		$final = array_merge($allSpecificRules[$styleId],$final);
 		//self::debug($final);
 		if(count($node)==0){$nid=0;};
 		$r=customBackgroundChooser_sharedStatic::getFromDB($nid,$uid);
