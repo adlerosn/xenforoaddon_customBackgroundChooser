@@ -49,9 +49,14 @@ class customBackgroundChooser_routeJSController extends XenForo_ControllerPublic
 		}
 		else if (customBackgroundChooser_sharedStatic::startsWith($r,'sug')){
 			$u=substr($r,3);
-			$i='rgb(0, 0, 0) url(\'styles/kiror/customBackgroundChooser/defaultImages/'.$u.'.jpg\') no-repeat center / cover';
-			$final['set']=true;
-			$final['background']=($i);
+			$u=intval($u);
+			$imgs = customBackgroundChooser_sharedStatic::getNormalizedImages();
+			if(array_key_exists($u,$imgs)){
+				$img = $imgs[$u]['image']['full'];
+				$i='rgb(0, 0, 0) url(\''.$img.'\') no-repeat center / cover';
+				$final['background']=($i);
+				$final['set']=true;
+			}
 		}
 		else if (customBackgroundChooser_sharedStatic::startsWith($r,'clr')){
 			$u=substr($r,3);

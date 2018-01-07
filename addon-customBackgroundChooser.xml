@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon addon_id="customBackgroundChooser" title="[kiror] Custom background chooser" version_string="0.5" version_id="5" url="https://github.com/adlerosn/" install_callback_class="customBackgroundChooser_setup" install_callback_method="install" uninstall_callback_class="customBackgroundChooser_setup" uninstall_callback_method="uninstall">
+<addon addon_id="customBackgroundChooser" title="[kiror][background] Chooser (core)" version_string="0.6" version_id="6" url="https://github.com/adlerosn/" install_callback_class="customBackgroundChooser_setup" install_callback_method="install" uninstall_callback_class="customBackgroundChooser_setup" uninstall_callback_method="uninstall">
   <admin_navigation/>
   <admin_permissions/>
   <admin_style_properties/>
@@ -190,10 +190,69 @@ th.beatiful {
 ]]></template>
   </admin_templates>
   <admin_template_modifications/>
-  <code_events/>
-  <code_event_listeners>
-    <listener event_id="template_post_render" execute_order="10" callback_class="customBackgroundChooser_templatePostRender" callback_method="tpr_callback" active="1" hint="" description="Add custom CSS rule for background"/>
-  </code_event_listeners>
+  <code_events>
+    <event event_id="background_chooser_fill_image_array"><![CDATA[<p>Called when filling the image array is necessary.</p>
+
+<p>Callback signature:</p>
+<blockquote><code><em>array</em> &amp;$images</code></blockquote>
+
+<p>Arguments:</p>
+<ol>
+	<li><code><em>array</em> &amp;$images</code> - the image array</li>
+</ol>
+
+<p>Data structure:</p>
+<blockquote><code>[<br>
+&nbsp;&nbsp;<em>"string-addon-unique-identifier"</em> => [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;[<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"info" => [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"nm" => <em>"raw-html-for-image-name"</em>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"by" => <em>"raw-html-for-image-author"</em>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"lc" => <em>"raw-html-for-image-license"</em><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"image" => [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"thumb" => <em>"url-to-image"</em>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"full"&nbsp; => <em>"url-to-image"</em>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;]<br>
+&nbsp;&nbsp;]<br>
+]
+</code></blockquote>
+
+
+<p>Data structure example:</p>
+<blockquote><code>[<br>
+&nbsp;&nbsp;<em>"my-addon"</em> => <span class="muted">/*start_your_copy-paste_here*/</span> [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;[<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"info" => [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"nm" => <em>"Dirty leaves"</em>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"by" => <em>"Nicky"</em>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"lc" => <em>"Creative Commons 4.0"</em><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"image" => [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"thumb" => <em>"styles/nicky/backgroundpack1/dirtyleaves_small.jpg"</em>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"full"&nbsp; => <em>"styles/nicky/backgroundpack1/dirtyleaves_full.jpg"</em>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;[<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"info" => [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"nm" => <em>"Clean leaves"</em>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"by" => <em>"nonCa"</em>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"lc" => <em>"Proprietary"</em><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"image" => [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"thumb" => <em>"styles/nicky/backgroundpack1/cleanleaves_small.jpg"</em>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"full"&nbsp; => <em>"styles/nicky/backgroundpack1/cleanleaves_full.jpg"</em>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;]<br>
+&nbsp;&nbsp;] <span class="muted">/*end_your_copy-paste_here*/</span><br>
+]
+</code><br>
+Tip: Try doing something near this as the last line of your event listener PHP code:<br>
+<code>$images[<em>"my-addon"</em>] = <em>$myImagesArray</em>;<code>
+</blockquote>]]></event>
+  </code_events>
+  <code_event_listeners/>
   <cron/>
   <email_templates/>
   <email_template_modifications/>
